@@ -2,5 +2,5 @@ lightgbm
 pandas
 numpy
 sklearn
-nni==0.9.1
+nni
 gensim

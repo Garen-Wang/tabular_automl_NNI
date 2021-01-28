@@ -112,9 +112,9 @@ def nunique(df, id_col, col):
     """
     get id group_by(id) nunique
     """
-    agg_dict = {}
-    agg_dict['NUNIQUE_{}_{}'.format(id_col, col)] = 'nunique'
-    agg_result = df.groupby([col])[id_col].agg(agg_dict)
+    agg_list = []
+    agg_list.append(('NUNIQUE_{}_{}'.format(id_col, col), 'nunique'))
+    agg_result = df.groupby([col])[id_col].agg(agg_list)
     r = left_merge(df, agg_result, on = [col])
     df = concat([df, r])
     return df
@@ -124,12 +124,12 @@ def histstat(df, id_col, col, stat_list = AGGREGATE_TYPE):
     """
     get id group_by(id) histgram statitics
     """
-    agg_dict = {}
+    agg_list = []
     for i in stat_list:
-        agg_dict['HISTSTAT_{}_{}_{}'.format(i, id_col, col)] = i
+        agg_list.append(('HISTSTAT_{}_{}_{}'.format(i, id_col, col), i))
     df['temp_count'] = df.groupby(id_col)[id_col].transform('count')
-    agg_result = df.groupby([col])['temp_count'].agg(agg_dict)
-    r = left_merge(df, agg_result, on = [col])
+    agg_result = df.groupby([col])['temp_count'].agg(agg_list)
+    r = left_merge(df, agg_result, on=[col])
     df = concat([df, r])
     del df['temp_count']
     return df

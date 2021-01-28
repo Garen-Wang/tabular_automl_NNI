@@ -103,7 +103,7 @@ def aggregate(df, num_col, col, stat_list = AGGREGATE_TYPE):
     for i in stat_list:
         agg_list.append(('AGG_{}_{}_{}'.format(i, num_col, col), i))
     agg_result = df.groupby([col])[num_col].agg(agg_list)
-    r = left_merge(df, agg_result, on=[col])
+    r = left_merge(df, agg_result, on = [col])
     df = concat([df, r])
     return df
 
@@ -129,7 +129,7 @@ def histstat(df, id_col, col, stat_list = AGGREGATE_TYPE):
         agg_list.append(('HISTSTAT_{}_{}_{}'.format(i, id_col, col), i))
     df['temp_count'] = df.groupby(id_col)[id_col].transform('count')
     agg_result = df.groupby([col])['temp_count'].agg(agg_list)
-    r = left_merge(df, agg_result, on=[col])
+    r = left_merge(df, agg_result, on = [col])
     df = concat([df, r])
     del df['temp_count']
     return df

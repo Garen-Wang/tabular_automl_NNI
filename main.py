@@ -29,6 +29,7 @@ if __name__ == '__main__':
     file_name = 'train.tiny.csv'
     target_name = 'Label'
     id_index = 'Id'
+    min_data = 200  # must be a factor of number of instances
 
     # get parameters from tuner
     RECEIVED_PARAMS = nni.get_next_parameter()
@@ -43,7 +44,8 @@ if __name__ == '__main__':
     
     # raw feaure + sample_feature
     df = name2feature(df, sample_col, target_name)
-    feature_imp, val_score = lgb_model_train(df,  _epoch = 1000, target_name = target_name, id_index = id_index)
+    feature_imp, val_score = lgb_model_train(df, _epoch=1000, target_name=target_name,
+                                             id_index=id_index, min_data=min_data)
     nni.report_final_result({
         "default":val_score, 
         "feature_importance":feature_imp

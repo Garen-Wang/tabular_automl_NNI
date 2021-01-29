@@ -1,0 +1,13 @@
+{
+    "count":[
+        "age", "sex", "chest-pain", "bs-fasting", "ecg-resting"
+    ],
+    "aggregate":[
+        ["age", "sex", "chest-pain", "bs-fasting", "ecg-resting"],
+        ["bp-resting", "cholesterol", "hr-max", "eia", "oldpeak", "k-oldpeak", "vessels", "thal"]
+    ],
+    "crosscount":[
+        ["age", "sex", "chest-pain","bs-fasting", "ecg-resting"],
+        ["age", "sex", "chest-pain","bs-fasting", "ecg-resting"]
+    ]
+}

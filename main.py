@@ -50,3 +50,5 @@ if __name__ == '__main__':
         "default":val_score, 
         "feature_importance":feature_imp
     })
+    # print(feature_imp)
+    # print(val_score)

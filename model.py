@@ -31,10 +31,10 @@ def get_fea_importance(clf, feature_name):
         'feature_name':clf.feature_name(),
         'split': split_,
         'gain': gain, 
-        'gain_percent':100 *gain / gain.sum(),
-        'split_percent':100 *split_ / split_.sum(),
+        'gain_percent':100 * gain / gain.sum(),
+        'split_percent':100 * split_ / split_.sum(),
         })
-    importance_df['feature_score'] =  0.3*  importance_df['gain_percent'] + 0.7 * importance_df['split_percent'] 
+    importance_df['feature_score'] = 0.3 * importance_df['gain_percent'] + 0.7 * importance_df['split_percent']
     importance_df.loc[importance_df['split'] ==0, 'feature_score'] = 0
     importance_df['feature_score'] = importance_df['feature_score'] / importance_df['feature_score'].sum()
     importance_df = importance_df.sort_values('feature_score',ascending=False)
@@ -51,7 +51,7 @@ def train_test_split(X, y, test_size, random_state=2018):
     return [X_train, X_test, y_train, y_test]
 
 
-def lgb_model_train( df, _epoch=1000, target_name='Label', id_index='Id', min_data=200):
+def lgb_model_train(df, _epoch=1000, target_name='Label', id_index='Id', min_data=200):
     df = df.loc[df[target_name].isnull()==False]
     feature_name = [i for i in df.columns if i not in [target_name, id_index]]
     for i in feature_name:
@@ -61,12 +61,12 @@ def lgb_model_train( df, _epoch=1000, target_name='Label', id_index='Id', min_da
             else:
                 df.loc[:,i] = LabelEncoder().fit_transform(df.loc[:,i].fillna('na').astype(str))
     params_lgb = {
-            "objective": "binary", 
-            "metric":"auc", 
-            'verbose': -1, 
-            "seed": 1024, 
+            "objective": "binary",
+            "metric":"auc",
+            'verbose': -1,
+            "seed": 1024,
             'num_threads': 4,
-            'num_leaves':64, 
+            'num_leaves':64,
             'learning_rate': 0.05,
             'min_data': min_data,
             'bagging_fraction': 0.5,
@@ -84,7 +84,8 @@ def lgb_model_train( df, _epoch=1000, target_name='Label', id_index='Id', min_da
     gc.collect()
     clf = lgb.train(
         params_lgb, lgb_train, valid_sets=lgb_val, valid_names='eval', 
-        verbose_eval=50, early_stopping_rounds=100, num_boost_round=_epoch)
+        verbose_eval=50, early_stopping_rounds=100, num_boost_round=_epoch
+    )
 
     fea_importance_now = get_fea_importance(clf, feature_name)
     val_auc = roc_auc_score(y_val,  clf.predict(X_val, num_iteration=clf.best_iteration))
